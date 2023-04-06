@@ -13,8 +13,11 @@ Matrix::Matrix(int r, int c) {
 }
 
 Matrix::Matrix(int r, int c, const std::vector<double> arr) {
+    rowNum = r;
+    colNum = c;
+    mat = new double[rowNum*colNum];
+    memset(mat, 0, rowNum*colNum*sizeof(double));
     if( arr.size() == rowNum * colNum ) {
-        Matrix(r, c);
         for(int i=0; i<rowNum*colNum; ++i)
             mat[i] = arr[i];   
     }
@@ -25,7 +28,10 @@ Matrix::Matrix(int r, int c, const std::vector<double> arr) {
 }
 
 Matrix::Matrix(const Matrix& copy) {
-    Matrix(copy.rowNum, copy.colNum);
+    rowNum = copy.rowNum;
+    colNum = copy.colNum;
+    mat = new double[rowNum*colNum];
+    memset(mat, 0, rowNum*colNum*sizeof(double));
     for(int i=0; i<rowNum*colNum; ++i) 
         mat[i] = copy.mat[i];
 }
@@ -50,11 +56,20 @@ void Matrix::print()
 
 
 // overloaded operators
-
 double Matrix::operator()(size_t r, size_t c) const
 {
     if( r < rowNum && c < colNum ) {
-        return mat[r*rowNum + colNum];
+        return mat[r*rowNum + c];
+    }   
+    else {
+        std::cerr<< "Wrong indexes" <<std::endl;
+        std::abort();
+    }
+}
+
+double& Matrix::operator()(size_t r, size_t c) {
+    if( r < rowNum && c < colNum ) {
+        return mat[r*rowNum + c];
     }   
     else {
         std::cerr<< "Wrong indexes" <<std::endl;
@@ -72,9 +87,16 @@ std::ostream& operator<<(std::ostream& out, const Matrix& x) {
     return out;
 }
 
-// std::istream& operator>>(std::istream& in, const Matrix& x) {
-//     for(auto &a : x) {
-//         in >> a;
-//     }
-//     return in;
-// }
+std::istream& operator>>(std::istream& in, Matrix& x) {
+    for(int i=0; i<x.rowNum; ++i) {
+        for(int j=0; j<x.colNum; ++j) {
+            in>> x(i,j);
+        }
+    }
+    return in;
+
+    // for(auto &a : x) {
+    //     in >> a;
+    // }
+    // return in;
+}

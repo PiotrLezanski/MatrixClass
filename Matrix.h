@@ -28,8 +28,9 @@ public:
 
     // overloaded operators
     double operator()(size_t, size_t) const;
+    double& operator()(size_t, size_t);
     friend std::ostream& operator<<(std::ostream&, const Matrix&);
-    friend std::istream& operator>>(std::istream&, const Matrix&);
+    friend std::istream& operator>>(std::istream&, Matrix&);
 };
 
 #endif
