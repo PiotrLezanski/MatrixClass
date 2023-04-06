@@ -14,7 +14,7 @@ public:
     Matrix(int, int); // initialize nxm empty matrix (filled with 0)
     Matrix(int, int, const std::vector<double>); // ilitialize nxm matrix with given array
     Matrix(const Matrix&); // copy constructor
-    ~Matrix(); 
+    ~Matrix();
 
     // core functions
     int getRowNum() {return rowNum;};
@@ -29,6 +29,7 @@ public:
     // overloaded operators
     double operator()(size_t, size_t) const;
     double& operator()(size_t, size_t);
+    bool operator==(const Matrix&);
     friend std::ostream& operator<<(std::ostream&, const Matrix&);
     friend std::istream& operator>>(std::istream&, Matrix&);
 };

@@ -77,6 +77,17 @@ double& Matrix::operator()(size_t r, size_t c) {
     }
 }
 
+bool Matrix::operator==(const Matrix& a) {
+    if( a.colNum != this->colNum || a.rowNum != this->rowNum ) return false;
+    for(int i=0; i<this->rowNum; ++i) {
+        for(int j=0; j<this->colNum; ++j) {
+            if( this->operator()(i,j) != a(i,j) )
+                return false;
+        }
+    }
+    return true;
+}
+
 std::ostream& operator<<(std::ostream& out, const Matrix& x) {
     for(int i=0; i<x.rowNum; ++i) {
         for(int j=0; j<x.colNum; ++j) {
