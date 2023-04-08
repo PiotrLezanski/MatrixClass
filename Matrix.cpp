@@ -16,7 +16,6 @@ Matrix::Matrix(int r, int c, const std::vector<double> arr) {
     rowNum = r;
     colNum = c;
     mat = new double[rowNum*colNum];
-    memset(mat, 0, rowNum*colNum*sizeof(double));
     if( arr.size() == rowNum * colNum ) {
         for(int i=0; i<rowNum*colNum; ++i)
             mat[i] = arr[i];   
@@ -77,15 +76,65 @@ double& Matrix::operator()(size_t r, size_t c) {
     }
 }
 
-bool Matrix::operator==(const Matrix& a) {
-    if( a.colNum != this->colNum || a.rowNum != this->rowNum ) return false;
-    for(int i=0; i<this->rowNum; ++i) {
-        for(int j=0; j<this->colNum; ++j) {
-            if( this->operator()(i,j) != a(i,j) )
+bool operator==(const Matrix& a, const Matrix& b) {
+    if( a.colNum != b.colNum || a.rowNum != b.rowNum ) return false;
+    for(int i=0; i<b.rowNum; ++i) {
+        for(int j=0; j<b.colNum; ++j) {
+            if( b.operator()(i,j) != a(i,j) )
                 return false;
         }
     }
     return true;
+}
+
+Matrix operator+(const Matrix& a, const Matrix& b) {
+    if( a.rowNum == b.rowNum && a.colNum == b.colNum ) {
+        Matrix res(a.rowNum, a.colNum);
+        for(int i=0; i<a.rowNum; ++i) {
+            for(int j=0; j<a.colNum; ++j) {
+                res(i,j) = a(i,j) + b(i,j);
+            }
+        }
+        return res;
+    }
+    else {
+        std::cerr<< "Wrong sizes of matrixes" <<std::endl;
+        std::abort();
+    }
+    return Matrix();
+}
+
+Matrix Matrix::operator+=(const Matrix& a) {
+    if( this->colNum == a.colNum && this->rowNum == a.rowNum ) {
+        for(int i=0; i<a.rowNum; ++i) {
+            for(int j=0; j<a.colNum; ++j) {
+                this->operator()(i,j) = this->operator()(i,j) + a(i,j);
+            }
+        }
+        return *this;
+    }
+    else {
+        std::cerr<< "Wrong sizes of matrixes" <<std::endl;
+        std::abort();
+    }
+    return Matrix();
+}
+
+Matrix operator-(const Matrix& a, const Matrix& b) {
+    if( a.rowNum == b.rowNum && a.colNum == b.colNum ) {
+        Matrix res(a.rowNum, a.colNum);
+        for(int i=0; i<a.rowNum; ++i) {
+            for(int j=0; j<a.colNum; ++j) {
+                res(i,j) = a(i,j) - b(i,j);
+            }
+        }
+        return res;
+    }
+    else {
+        std::cerr<< "Wrong sizes of matrixes" <<std::endl;
+        std::abort();
+    }
+    return Matrix();
 }
 
 std::ostream& operator<<(std::ostream& out, const Matrix& x) {
@@ -105,9 +154,4 @@ std::istream& operator>>(std::istream& in, Matrix& x) {
         }
     }
     return in;
-
-    // for(auto &a : x) {
-    //     in >> a;
-    // }
-    // return in;
 }

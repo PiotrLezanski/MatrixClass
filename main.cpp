@@ -8,14 +8,14 @@ int main()
     std::cin>> r;
     std::cin>> c;
     std::vector<double> arr;
-    arr.push_back(1.0);
-    arr.push_back(2.0);
-    arr.push_back(3.0);
-    arr.push_back(4.0);
-    Matrix m(r,c, arr);
+    Matrix a(r,c);
+    Matrix b(r,c);
+    std::cin>> a;
+    std::cin>> b;
 
-    // std::cin>> m;
-    std::cout<< m <<std::endl;
+    a+=b;
+    std::cout<<std::endl;
+    std::cout<< a <<std::endl;
 
     return 0;
 }

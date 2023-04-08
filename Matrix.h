@@ -29,7 +29,10 @@ public:
     // overloaded operators
     double operator()(size_t, size_t) const;
     double& operator()(size_t, size_t);
-    bool operator==(const Matrix&);
+    friend bool operator==(const Matrix&, const Matrix&);
+    friend Matrix operator+(const Matrix&, const Matrix&);
+    Matrix operator+=(const Matrix&);
+    friend Matrix operator-(const Matrix&, const Matrix&);
     friend std::ostream& operator<<(std::ostream&, const Matrix&);
     friend std::istream& operator>>(std::istream&, Matrix&);
 };
