@@ -52,7 +52,15 @@ void Matrix::print()
 }
 
 // operations
-
+Matrix Matrix::operator=(const Matrix& a)
+{
+    this->colNum = a.colNum;
+    this->rowNum = a.rowNum;
+    for(int i=0; i<a.colNum*a.rowNum; ++i) {
+        this->mat[i] = a.mat[i];
+    }
+    return *this;
+}
 
 // overloaded operators
 double Matrix::operator()(size_t r, size_t c) const
@@ -76,15 +84,20 @@ double& Matrix::operator()(size_t r, size_t c) {
     }
 }
 
-bool operator==(const Matrix& a, const Matrix& b) {
-    if( a.colNum != b.colNum || a.rowNum != b.rowNum ) return false;
-    for(int i=0; i<b.rowNum; ++i) {
-        for(int j=0; j<b.colNum; ++j) {
-            if( b.operator()(i,j) != a(i,j) )
+bool Matrix::operator==(const Matrix& a) {
+    if( this->colNum != a.colNum || this->rowNum != a.rowNum ) return false;
+    for(int i=0; i<a.rowNum; ++i) {
+        for(int j=0; j<a.colNum; ++j) {
+            if( this->operator()(i,j) != a(i,j) )
                 return false;
         }
     }
     return true;
+}
+
+bool Matrix::operator!=(const Matrix& a)
+{
+    return !this->operator==(a);
 }
 
 Matrix operator+(const Matrix& a, const Matrix& b) {
@@ -129,6 +142,63 @@ Matrix operator-(const Matrix& a, const Matrix& b) {
             }
         }
         return res;
+    }
+    else {
+        std::cerr<< "Wrong sizes of matrixes" <<std::endl;
+        std::abort();
+    }
+    return Matrix();
+}
+
+Matrix operator*(const Matrix& a, const Matrix& b) {
+    Matrix res(a.rowNum, b.colNum);
+    if( a.colNum == b.rowNum ) {
+        for(int i=0; i<a.rowNum; ++i) {
+            for(int j=0; j<b.colNum; ++j) {
+                double sum = 0;
+                for(int k=0; k<a.colNum; ++k) {
+                    sum += a(i,k) * b(k, j);
+                }
+                res(i,j) = sum;
+            }
+        }
+        return res;
+    }
+    else {
+        std::cerr<< "These matrixes cannot be multiplied" <<std::endl;
+        std::abort();
+    }
+}
+
+Matrix Matrix::operator*=(const Matrix& a) {
+    Matrix res(a.rowNum, this->colNum);
+    if( this->colNum == a.rowNum ) {
+        for(int i=0; i<this->rowNum; ++i) {
+            for(int j=0; j<a.colNum; ++j) {
+                double sum = 0;
+                for(int k=0; k<this->colNum; ++k) {
+                    sum += this->operator()(i,k) * a(k, j);
+                }
+                res(i,j) = sum;
+            }
+        }
+        *this = res;
+        return *this;
+    }
+    else {
+        std::cerr<< "These matrixes cannot be multiplied" <<std::endl;
+        std::abort();
+    }
+}
+
+Matrix Matrix::operator-=(const Matrix& a) {
+    if( this->colNum == a.colNum && this->rowNum == a.rowNum ) {
+        for(int i=0; i<a.rowNum; ++i) {
+            for(int j=0; j<a.colNum; ++j) {
+                this->operator()(i,j) = this->operator()(i,j) - a(i,j);
+            }
+        }
+        return *this;
     }
     else {
         std::cerr<< "Wrong sizes of matrixes" <<std::endl;
