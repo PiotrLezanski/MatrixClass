@@ -30,12 +30,22 @@ Matrix::Matrix(int r, int c, const std::vector<double> arr) {
 }
 
 Matrix::Matrix(const Matrix& copy) {
-    rowNum = copy.rowNum;
-    colNum = copy.colNum;
-    mat = new double[rowNum*colNum];
-    memset(mat, 0, rowNum*colNum*sizeof(double));
+    this->rowNum = copy.rowNum;
+    this->colNum = copy.colNum;
+    this->mat = new double[rowNum*colNum];
+    // memset(mat, 0, rowNum*colNum*sizeof(double));
+    // for(int i=0; i<rowNum*colNum; ++i) 
+    //     std::cout<< copy.mat[i] << " ";
+    // std::cout<<std::endl;
+
     for(int i=0; i<rowNum*colNum; ++i) 
-        mat[i] = copy.mat[i];
+        this->mat[i] = copy.mat[i];
+
+    // for(int i=0; i<rowNum*colNum; ++i) 
+    //     std::cout<< mat[i] << " ";
+    // std::cout<<std::endl;
+
+    // this->print();
 }
 
 Matrix::~Matrix() {
@@ -45,16 +55,12 @@ Matrix::~Matrix() {
 
 void Matrix::transpose() {
     Matrix b(this->colNum, this->rowNum); // make new transposed matrix col x row
-    // std::cout<< b <<std::endl;
-    std::cout<< std::endl;
-    b.print();
-    // for(int i=0; i<this->rowNum; ++i) {
-    //     for(int j=0; j<this->colNum; ++j) {
-    //         b(j,i) = this->operator()(i,j);
-    //     }
-    // }
-    // // std::cout<< b <<std::endl;
-    // *this = b;
+    for(int i=0; i<this->rowNum; ++i) {
+        for(int j=0; j<this->colNum; ++j) {
+            b(j,i) = this->operator()(i,j);
+        }
+    }
+    *this = b;
 }
 
 void Matrix::rotate() { 
@@ -76,7 +82,7 @@ Matrix Matrix::operator=(const Matrix& a)
 double Matrix::operator()(size_t r, size_t c) const
 {
     if( r < rowNum && c < colNum ) {
-        return mat[r*rowNum + c];
+        return mat[r*colNum + c];
     }   
     else {
         std::cerr<< "Wrong indexes" <<std::endl;
@@ -86,7 +92,7 @@ double Matrix::operator()(size_t r, size_t c) const
 
 double& Matrix::operator()(size_t r, size_t c) {
     if( r < rowNum && c < colNum ) {
-        return mat[r*rowNum + c];
+        return mat[r*colNum + c];
     }   
     else {
         std::cerr<< "Wrong indexes" <<std::endl;
@@ -228,20 +234,8 @@ std::ostream& operator<<(std::ostream& out, const Matrix& x) {
 }
 
 std::istream& operator>>(std::istream& in, Matrix& x) {
-    for(int i=0; i<x.rowNum; ++i) {
-        for(int j=0; j<x.colNum; ++j) {
-            in>> x(i,j);
-        }
+    for(int i=0; i<x.rowNum*x.colNum; ++i) {
+        in>> x.mat[i];   
     }
     return in;
-}
-
-void Matrix::print()
-{
-    for(int i=0; i<rowNum; ++i) {
-        for(int j=0; j<colNum; ++j) {
-            std::cout<< mat[i*rowNum+j] <<" ";
-        }
-        std::cout<<std::endl;
-    }
 }

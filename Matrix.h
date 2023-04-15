@@ -19,7 +19,6 @@ public:
     // core functions
     int getRowNum() {return rowNum;};
     int getColNum() {return colNum;};
-    void print();
 
     // operations
     void transpose();

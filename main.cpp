@@ -16,7 +16,19 @@ int main()
     a.transpose();
 
     std::cout<<std::endl;
-    // std::cout<< a <<std::endl;
+    std::cout<< a <<std::endl;
+
+    // 2
+    // Matrix a(r,c);
+    // std::cin>> a;
+
+    // // std::cout<< "A:" <<std::endl;
+    // // std::cout<< a <<std::endl;
+    // // std::cout<<std::endl;
+
+    // Matrix b(a);
+    // std::cout<< std::endl;
+    // std::cout<< b <<std::endl;
 
     return 0;
 }
