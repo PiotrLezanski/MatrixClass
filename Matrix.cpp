@@ -9,7 +9,10 @@ Matrix::Matrix(int r, int c) {
     rowNum = r;
     colNum = c;
     mat = new double[rowNum*colNum];
-    memset(mat, 0, rowNum*colNum*sizeof(double));
+    memset(mat, 0.0, rowNum*colNum*sizeof(double));
+    // std::cout<< "---" <<std::endl;
+    
+    // std::cout<< "---" <<std::endl;
 }
 
 Matrix::Matrix(int r, int c, const std::vector<double> arr) {
@@ -40,15 +43,22 @@ Matrix::~Matrix() {
         delete [] mat;
 }
 
-// core functions
-void Matrix::print()
-{
-    for(int i=0; i<rowNum; ++i) {
-        for(int j=0; j<colNum; ++j) {
-            std::cout<< mat[i*rowNum+j] <<" ";
-        }
-        std::cout<<std::endl;
-    }
+void Matrix::transpose() {
+    Matrix b(this->colNum, this->rowNum); // make new transposed matrix col x row
+    // std::cout<< b <<std::endl;
+    std::cout<< std::endl;
+    b.print();
+    // for(int i=0; i<this->rowNum; ++i) {
+    //     for(int j=0; j<this->colNum; ++j) {
+    //         b(j,i) = this->operator()(i,j);
+    //     }
+    // }
+    // // std::cout<< b <<std::endl;
+    // *this = b;
+}
+
+void Matrix::rotate() { 
+
 }
 
 // operations
@@ -224,4 +234,14 @@ std::istream& operator>>(std::istream& in, Matrix& x) {
         }
     }
     return in;
+}
+
+void Matrix::print()
+{
+    for(int i=0; i<rowNum; ++i) {
+        for(int j=0; j<colNum; ++j) {
+            std::cout<< mat[i*rowNum+j] <<" ";
+        }
+        std::cout<<std::endl;
+    }
 }

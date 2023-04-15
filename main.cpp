@@ -9,14 +9,14 @@ int main()
     std::cin>> c;
 
     Matrix a(r,c);
-    Matrix b(r,c);
+    // Matrix b(r,c);
     std::cin>> a;
-    std::cin>> b;
+    // std::cin>> b;
     
-    a *= b;
-    // a = a - b;
+    a.transpose();
+
     std::cout<<std::endl;
-    std::cout<< a <<std::endl;
+    // std::cout<< a <<std::endl;
 
     return 0;
 }

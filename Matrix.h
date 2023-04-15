@@ -22,9 +22,9 @@ public:
     void print();
 
     // operations
-    void transpose(Matrix&);
-    void rotate(Matrix&);
-    double determinant(Matrix&);
+    void transpose();
+    void rotate();
+    double determinant() const;
 
     // overloaded operators
     Matrix operator=(const Matrix&);
