@@ -22,7 +22,7 @@ public:
 
     // operations
     void transpose();
-    void rotate();
+    void rotate(int=1);
     double determinant() const;
 
     // overloaded operators

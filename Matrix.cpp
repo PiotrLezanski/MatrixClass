@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include "Matrix.h"
 
@@ -10,9 +11,6 @@ Matrix::Matrix(int r, int c) {
     colNum = c;
     mat = new double[rowNum*colNum];
     memset(mat, 0.0, rowNum*colNum*sizeof(double));
-    // std::cout<< "---" <<std::endl;
-    
-    // std::cout<< "---" <<std::endl;
 }
 
 Matrix::Matrix(int r, int c, const std::vector<double> arr) {
@@ -33,19 +31,8 @@ Matrix::Matrix(const Matrix& copy) {
     this->rowNum = copy.rowNum;
     this->colNum = copy.colNum;
     this->mat = new double[rowNum*colNum];
-    // memset(mat, 0, rowNum*colNum*sizeof(double));
-    // for(int i=0; i<rowNum*colNum; ++i) 
-    //     std::cout<< copy.mat[i] << " ";
-    // std::cout<<std::endl;
-
     for(int i=0; i<rowNum*colNum; ++i) 
         this->mat[i] = copy.mat[i];
-
-    // for(int i=0; i<rowNum*colNum; ++i) 
-    //     std::cout<< mat[i] << " ";
-    // std::cout<<std::endl;
-
-    // this->print();
 }
 
 Matrix::~Matrix() {
@@ -63,17 +50,29 @@ void Matrix::transpose() {
     *this = b;
 }
 
-void Matrix::rotate() { 
-
+void Matrix::rotate(int times) {
+    while(times--) {
+        // transpose matrix
+        this->transpose();
+        // reflect
+        for(int i=0; i<rowNum; ++i) {
+            for(int j=0; j<colNum/2; ++j) {
+                double tmp = this->operator()(i,j);
+                this->operator()(i,j) = this->operator()(i,colNum-j-1);
+                this->operator()(i,colNum-j-1) = tmp;
+            }
+        }
+    }
 }
 
 // operations
 Matrix Matrix::operator=(const Matrix& a)
 {
-    this->colNum = a.colNum;
-    this->rowNum = a.rowNum;
+    colNum = a.colNum;
+    rowNum = a.rowNum;
+    mat = (double*)realloc(mat,colNum*rowNum*sizeof(double));
     for(int i=0; i<a.colNum*a.rowNum; ++i) {
-        this->mat[i] = a.mat[i];
+        mat[i] = a.mat[i];
     }
     return *this;
 }
