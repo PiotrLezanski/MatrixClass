@@ -65,6 +65,30 @@ void Matrix::rotate(int times) {
     }
 }
 
+double Matrix::determinant() const {
+    Matrix a(*this);
+    if( rowNum == colNum ) {
+        for(int i=0; i<rowNum-1; ++i) {
+            for(int j=i+1; j<colNum; ++j) {
+                double scale = a(j,i) / a(i,i);
+                for(int k=i; k<colNum; ++k) {
+                    a(j,k) -= (a(i,k) * scale);
+                }
+            }   
+        }
+
+        double deter = 1;
+        for(int i=0; i<rowNum; ++i) {
+            deter *= a(i,i);
+        }
+        return deter;
+    }
+    else {
+        std::cerr<< "Can't calculate deterninat of non nxn matrix" <<std::endl;
+        std::abort();
+    }
+}
+
 // operations
 Matrix Matrix::operator=(const Matrix& a)
 {

@@ -12,10 +12,8 @@ int main()
     // Matrix b(r,c);
     std::cin>> a;
     // std::cin>> b;
-    
-    a.rotate(2);
 
-    std::cout<< a <<std::endl;
+    std::cout<< a.determinant() <<std::endl;
 
     return 0;
 }
